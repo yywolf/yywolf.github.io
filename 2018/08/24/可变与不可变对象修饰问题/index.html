@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="###不可变对象 ####使用copy修饰不可变对象nameCopy， 1@property (nonatomic, copy) NSString *nameCopy; 如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值； 1234567891011121314N">
+<meta name="description" content="不可变对象使用copy修饰不可变对象nameCopy，1@property (nonatomic, copy) NSString *nameCopy; 如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值； 1234567891011121314NSString *">
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="可变与不可变对象修饰问题">
 <meta property="og:url" content="http://yoursite.com/2018/08/24/可变与不可变对象修饰问题/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="###不可变对象 ####使用copy修饰不可变对象nameCopy， 1@property (nonatomic, copy) NSString *nameCopy; 如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值； 1234567891011121314N">
+<meta property="og:description" content="不可变对象使用copy修饰不可变对象nameCopy，1@property (nonatomic, copy) NSString *nameCopy; 如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值； 1234567891011121314NSString *">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-24T14:35:08.846Z">
+<meta property="og:updated_time" content="2018-08-24T14:42:33.875Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="可变与不可变对象修饰问题">
-<meta name="twitter:description" content="###不可变对象 ####使用copy修饰不可变对象nameCopy， 1@property (nonatomic, copy) NSString *nameCopy; 如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值； 1234567891011121314N">
+<meta name="twitter:description" content="不可变对象使用copy修饰不可变对象nameCopy，1@property (nonatomic, copy) NSString *nameCopy; 如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值； 1234567891011121314NSString *">
 
 
 
@@ -300,32 +300,28 @@
       
 
       
-        <p>###不可变对象</p>
-<p>####使用copy修饰不可变对象nameCopy，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSString *nameCopy;</span><br></pre></td></tr></table></figure>
+        <h3 id="不可变对象"><a href="#不可变对象" class="headerlink" title="不可变对象"></a>不可变对象</h3><h4 id="使用copy修饰不可变对象nameCopy，"><a href="#使用copy修饰不可变对象nameCopy，" class="headerlink" title="使用copy修饰不可变对象nameCopy，"></a>使用copy修饰不可变对象nameCopy，</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSString *nameCopy;</span><br></pre></td></tr></table></figure>
 <p>如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值；</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSString *tempStr = @&quot;111&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 1 =%p&quot;,tempStr);</span><br><span class="line">//tempStr 1 = 0x10be59078</span><br><span class="line"></span><br><span class="line">self.nameCopy = tempStr;</span><br><span class="line">NSLog(@&quot;nameCopy 1 =%p&quot;,self.nameCopy);</span><br><span class="line">//nameCopy 1 = 0x10be59078</span><br><span class="line"></span><br><span class="line">tempStr = @&quot;222&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 2 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 2 = 0x10be590d8</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameCopy= %@   nameCopy 2 = %p&quot;,self.nameCopy,self.nameCopy);</span><br><span class="line">// nameCopy = 111   nameCopy 2 = 0x10be59078</span><br></pre></td></tr></table></figure>
 <p>如果传进来的是可变对象tempMulStr，nameCopy并不拷贝tempMulStr的地址，自己创建一个地址空间来存储传入的值，当修改tempMulStr时，而这地址不一样，也无法影响到nameCopy的值。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *tempMulStr = [NSMutableString stringWithFormat:@&quot;333&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 1 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 1 = 0x60000007d1c0</span><br><span class="line"></span><br><span class="line">self.nameCopy = tempMulStr;</span><br><span class="line">NSLog(@&quot;nameCopy 1 = %p&quot;,self.nameCopy);</span><br><span class="line">//nameCopy 1 = 0xa000000003333333</span><br><span class="line"></span><br><span class="line">[tempMulStr appendString:@&quot;444&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 2 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 2 = 0x60000007d1c0</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameCopy= %@   nameCopy 2 = %p&quot;,self.nameCopy,self.nameCopy);</span><br><span class="line">//nameCopy=333   nameCopy 2 = 0xa000000003333333</span><br></pre></td></tr></table></figure>
-<p>####使用strong修饰不可变对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) NSString *nameStrong;</span><br></pre></td></tr></table></figure>
+<h4 id="使用strong修饰不可变对象"><a href="#使用strong修饰不可变对象" class="headerlink" title="使用strong修饰不可变对象"></a>使用strong修饰不可变对象</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) NSString *nameStrong;</span><br></pre></td></tr></table></figure>
 <p>如果传入的是不可变对象tempStr，nameStrong会拷贝他的地址空间并持有，再次修改tempStr，其会另外创建一个地址并赋值，并不会影响nameStrong的值；</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSString *tempStr = @&quot;111&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 1 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 1 = 0x10b08b078</span><br><span class="line"></span><br><span class="line">self.nameStrong = tempStr;</span><br><span class="line">NSLog(@&quot;nameStrong 1 = %p&quot;,self.nameStrong);</span><br><span class="line">//nameStrong 1 = 0x10b08b078</span><br><span class="line"></span><br><span class="line">tempStr = @&quot;222&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 2 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 2 = 0x10b08b0d8</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameStrong = %@   nameStrong 2 = %p&quot;,self.nameStrong,self.nameStrong);</span><br><span class="line">// nameStrong = 111   nameStrong 2 = 0x10b08b078</span><br></pre></td></tr></table></figure>
 <p>如果传入的是可变对象tempMulStr，nameStrong会拷贝并一直持有tempMulStr的地址，在其他地方修改tempMulStr的值，nameStrong的值也一并会改变。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *tempMulStr = [NSMutableString stringWithFormat:@&quot;333&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 1 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 1 = 0x600000078900</span><br><span class="line"></span><br><span class="line">self.nameStrong = tempMulStr;</span><br><span class="line">NSLog(@&quot;nameStrong 1 = %p&quot;,self.nameStrong);</span><br><span class="line">//nameStrong 1 = 0x600000078900</span><br><span class="line">[tempMulStr appendString:@&quot;444&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 2 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 2 = 0x600000078900</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameStrong = %@   nameStrong 2 = %p&quot;,self.nameStrong,self.nameStrong);</span><br><span class="line">//nameStrong = 333444   nameStrong 2 = 0x600000078900</span><br></pre></td></tr></table></figure>
 <p>这与我们的初衷(不可变对象)不符！</p>
-<p>###可变对象</p>
-<p>####使用copy修饰可变对象nameMulCopy</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSMutableString *nameMulCopy;</span><br></pre></td></tr></table></figure>
+<h3 id="可变对象"><a href="#可变对象" class="headerlink" title="可变对象"></a>可变对象</h3><h4 id="使用copy修饰可变对象nameMulCopy"><a href="#使用copy修饰可变对象nameMulCopy" class="headerlink" title="使用copy修饰可变对象nameMulCopy"></a>使用copy修饰可变对象nameMulCopy</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSMutableString *nameMulCopy;</span><br></pre></td></tr></table></figure>
 <p>使用copy修饰后，nameMulCopy就变成了不可变对象，但是我们声明的是可变对象，而且在使用可变对象的一些方法时，程序会crash。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">NSString *tempStr = @&quot;111&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 1 = %p&quot;,tempStr);</span><br><span class="line">// tempStr 1 = 0x10ceae078</span><br><span class="line">//需要mutableCopy转化</span><br><span class="line">self.nameMulCopy = [tempStr mutableCopy];</span><br><span class="line">NSLog(@&quot;nameMulCopy 1 = %p  tempStr = %p&quot;,self.nameMulCopy,tempStr);</span><br><span class="line">//nameMulCopy 1 = 0xa000000003131313  tempStr = 0x10ceae078</span><br><span class="line"></span><br><span class="line">tempStr = @&quot;222&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 2 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 2 = 0x10ceae0d8</span><br><span class="line"></span><br><span class="line">//此行crash</span><br><span class="line">//[NSTaggedPointerString appendString:]: unrecognized selector sent to instance 0xa000000003131313   </span><br><span class="line">//未识别方法，因为copy后变成不可变对象了</span><br><span class="line">[self.nameMulCopy appendString:@&quot;333&quot;];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameMulCopy = %@   nameMulCopy 2 = %p&quot;,self.nameMulCopy,self.nameMulCopy);</span><br><span class="line">//nameMulCopy = 111   nameMulCopy 2 = 0xa000000003131313</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">NSMutableString *tempMulStr = [NSMutableString stringWithFormat:@&quot;333&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 1 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 1 = 0x600000076d80</span><br><span class="line"></span><br><span class="line">self.nameMulCopy = tempMulStr;</span><br><span class="line">NSLog(@&quot;nameMulCopy 1 = %p&quot;,self.nameMulCopy);</span><br><span class="line">//nameMulCopy 1 = 0xa000000003333333</span><br><span class="line"></span><br><span class="line">[tempMulStr appendString:@&quot;444&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 2 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 2 = 0x600000076d80</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameMulCopy = %@   nameMulCopy 2 = %p&quot;,self.nameMulCopy,self.nameMulCopy);</span><br><span class="line">//nameMulCopy = 333   nameMulCopy 2 = 0xa000000003333333</span><br></pre></td></tr></table></figure>
-<p>####使用strong修饰可变对象nameMulStrong<br>如果传入的是不可变对象(需要mutableCopy转化)，nameMulStrong保存值到自己的地址，之后与tempStr在无关联。</p>
+<h4 id="使用strong修饰可变对象nameMulStrong"><a href="#使用strong修饰可变对象nameMulStrong" class="headerlink" title="使用strong修饰可变对象nameMulStrong"></a>使用strong修饰可变对象nameMulStrong</h4><p>如果传入的是不可变对象(需要mutableCopy转化)，nameMulStrong保存值到自己的地址，之后与tempStr在无关联。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSString *tempStr = @&quot;111&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 1 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 1 = 0x10e89a078</span><br><span class="line"></span><br><span class="line">self.nameMulStrong = [tempStr mutableCopy];</span><br><span class="line">NSLog(@&quot;nameMulStrong 1 = %p  tempStr = %p&quot;,self.nameMulStrong,tempStr);</span><br><span class="line">//nameMulStrong 1 = 0x6000000723c0  tempStr = 0x10e89a078</span><br><span class="line"></span><br><span class="line">tempStr = @&quot;222&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 2 = %p&quot;,tempStr);</span><br><span class="line">// tempStr 2 = 0x10e89a0d8</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;nameMulStrong = %@   nameMulStrong 2 = %p&quot;,self.nameMulStrong,self.nameMulStrong);</span><br><span class="line">//nameMulStrong = 111   nameMulStrong 2 = 0x6000000723c0</span><br></pre></td></tr></table></figure>
 <p>如果传入的是可变对象，nameMulStrong会拷贝并一直持有传入对象的地址空间，当传入的对象值发生变化时，nameMulStrong也会发生变化。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *tempMulStr = [NSMutableString stringWithFormat:@&quot;333&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 1 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 1 = 0x6080000730c0</span><br><span class="line"></span><br><span class="line">self.nameMulStrong = tempMulStr;</span><br><span class="line">NSLog(@&quot;nameMulStrong 1 = %p&quot;,self.nameMulStrong);</span><br><span class="line">// nameMulStrong 1 = 0x6080000730c0</span><br><span class="line"></span><br><span class="line">[tempMulStr appendString:@&quot;444&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 2 = %p&quot;,tempMulStr);</span><br><span class="line">// tempMulStr 2 = 0x6080000730c0</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameMulStrong = %@   nameMulStrong 2 = %p&quot;,self.nameMulStrong,self.nameMulStrong);</span><br><span class="line">// nameMulStrong = 333444   nameMulStrong 2 = 0x6080000730c0</span><br></pre></td></tr></table></figure>
 <p>其他的可变与不可变对象与此同理。</p>
-<p>###结论:<br>    不可变对象应当用copy修饰；<br>    可变对象应当用strong修饰。</p>
-
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论:"></a>结论:</h3><pre><code>不可变对象应当用copy修饰；
+可变对象应当用strong修饰。
+</code></pre>
       
     </div>
     
@@ -444,8 +440,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -496,6 +501,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#不可变对象"><span class="nav-number">1.</span> <span class="nav-text">不可变对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用copy修饰不可变对象nameCopy，"><span class="nav-number">1.1.</span> <span class="nav-text">使用copy修饰不可变对象nameCopy，</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用strong修饰不可变对象"><span class="nav-number">1.2.</span> <span class="nav-text">使用strong修饰不可变对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变对象"><span class="nav-number">2.</span> <span class="nav-text">可变对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用copy修饰可变对象nameMulCopy"><span class="nav-number">2.1.</span> <span class="nav-text">使用copy修饰可变对象nameMulCopy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用strong修饰可变对象nameMulStrong"><span class="nav-number">2.2.</span> <span class="nav-text">使用strong修饰可变对象nameMulStrong</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">3.</span> <span class="nav-text">结论:</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

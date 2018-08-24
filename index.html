@@ -300,10 +300,8 @@
       
         
           
-          ###不可变对象
-####使用copy修饰不可变对象nameCopy，
-1@property (nonatomic, copy) NSString *nameCopy;
-如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自
+          不可变对象使用copy修饰不可变对象nameCopy，1@property (nonatomic, copy) NSString *nameCopy;
+如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址
           ...
           <!--noindex-->
           <div class="post-button text-center">
