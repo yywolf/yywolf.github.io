@@ -1,0 +1,27 @@
+---
+title: LeetCode
+date: 2018-08-25 08:22:03
+tags:
+categories: LeetCode
+---
+##### 思路：
+###### 利用位运算中的异或运算：相同为0，相异为1。
+创建变量result，遍历数组元素，依次与result做异或运算。
+
+```
+func singleNumber(_ nums: [Int]) -> Int {
+    guard !nums.isEmpty else {
+        print("数组为空")
+        return -1;
+    }
+    
+    var result = 0
+    for item in nums {
+        result = result ^ item;
+    }
+    return result
+}
+
+print(singleNumber([1,2,1,5,2,3,3]))
+//5
+```
