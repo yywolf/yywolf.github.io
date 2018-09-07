@@ -119,7 +119,7 @@ git remote add origin 远程仓库地址链接
 git push -u origin master  （限于第一次提交到远程空仓库）-u可以将本地分支与远程分支关联起来
 ```
 
-推送到指定的分支：比如master
+推送到指定的分支：比如推送master到origin远程分支
 
 ```
 git push origin master
