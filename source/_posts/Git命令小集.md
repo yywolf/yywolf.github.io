@@ -161,7 +161,7 @@ git checkout master
 1.合并dev分支的内容到master分支(合并指定分支到当前分支)，会创建新的commit，记录真实的commit情况和详情，但是commit较频繁时，分支很杂乱
 git merge dev
 2.使用变基，找公共祖先，不会产生新的commit，会合并之前的commit历史
-git rebase dev
+git rebase -i dev
 ```
 
 分支合并默认Fast forward
