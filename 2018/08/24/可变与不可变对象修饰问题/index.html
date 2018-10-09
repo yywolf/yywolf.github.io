@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="自娱自乐" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="不可变对象使用copy修饰不可变对象nameCopy，1@property (nonatomic, copy) NSString *nameCopy; 如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值； 1234567891011121314NSString *">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="可变与不可变对象修饰问题">
+<meta property="og:url" content="http://yoursite.com/2018/08/24/可变与不可变对象修饰问题/index.html">
+<meta property="og:site_name" content="自娱自乐">
+<meta property="og:description" content="不可变对象使用copy修饰不可变对象nameCopy，1@property (nonatomic, copy) NSString *nameCopy; 如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值； 1234567891011121314NSString *">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-10-09T00:22:13.382Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="可变与不可变对象修饰问题">
+<meta name="twitter:description" content="不可变对象使用copy修饰不可变对象nameCopy，1@property (nonatomic, copy) NSString *nameCopy; 如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值； 1234567891011121314NSString *">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/24/可变与不可变对象修饰问题/"/>
+
+
+
+
+
+  <title>可变与不可变对象修饰问题 | 自娱自乐</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">自娱自乐</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/24/可变与不可变对象修饰问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangyun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="自娱自乐">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">可变与不可变对象修饰问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T22:33:56+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="不可变对象"><a href="#不可变对象" class="headerlink" title="不可变对象"></a>不可变对象</h3><h4 id="使用copy修饰不可变对象nameCopy，"><a href="#使用copy修饰不可变对象nameCopy，" class="headerlink" title="使用copy修饰不可变对象nameCopy，"></a>使用copy修饰不可变对象nameCopy，</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSString *nameCopy;</span><br></pre></td></tr></table></figure>
+<p>如果传进来的是不可变对象tempStr，nameCopy拷贝tempStr的地址并持有，当在其他地方修改tempStr的值时，其自动创建一个新的地址并赋值，并不会影响nameCopy的值；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSString *tempStr = @&quot;111&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 1 =%p&quot;,tempStr);</span><br><span class="line">//tempStr 1 = 0x10be59078</span><br><span class="line"></span><br><span class="line">self.nameCopy = tempStr;</span><br><span class="line">NSLog(@&quot;nameCopy 1 =%p&quot;,self.nameCopy);</span><br><span class="line">//nameCopy 1 = 0x10be59078</span><br><span class="line"></span><br><span class="line">tempStr = @&quot;222&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 2 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 2 = 0x10be590d8</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameCopy= %@   nameCopy 2 = %p&quot;,self.nameCopy,self.nameCopy);</span><br><span class="line">// nameCopy = 111   nameCopy 2 = 0x10be59078</span><br></pre></td></tr></table></figure>
+<p>如果传进来的是可变对象tempMulStr，nameCopy并不拷贝tempMulStr的地址，自己创建一个地址空间来存储传入的值，当修改tempMulStr时，而这地址不一样，也无法影响到nameCopy的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *tempMulStr = [NSMutableString stringWithFormat:@&quot;333&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 1 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 1 = 0x60000007d1c0</span><br><span class="line"></span><br><span class="line">self.nameCopy = tempMulStr;</span><br><span class="line">NSLog(@&quot;nameCopy 1 = %p&quot;,self.nameCopy);</span><br><span class="line">//nameCopy 1 = 0xa000000003333333</span><br><span class="line"></span><br><span class="line">[tempMulStr appendString:@&quot;444&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 2 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 2 = 0x60000007d1c0</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameCopy= %@   nameCopy 2 = %p&quot;,self.nameCopy,self.nameCopy);</span><br><span class="line">//nameCopy=333   nameCopy 2 = 0xa000000003333333</span><br></pre></td></tr></table></figure>
+<h4 id="使用strong修饰不可变对象"><a href="#使用strong修饰不可变对象" class="headerlink" title="使用strong修饰不可变对象"></a>使用strong修饰不可变对象</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) NSString *nameStrong;</span><br></pre></td></tr></table></figure>
+<p>如果传入的是不可变对象tempStr，nameStrong会拷贝他的地址空间并持有，再次修改tempStr，其会另外创建一个地址并赋值，并不会影响nameStrong的值；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSString *tempStr = @&quot;111&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 1 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 1 = 0x10b08b078</span><br><span class="line"></span><br><span class="line">self.nameStrong = tempStr;</span><br><span class="line">NSLog(@&quot;nameStrong 1 = %p&quot;,self.nameStrong);</span><br><span class="line">//nameStrong 1 = 0x10b08b078</span><br><span class="line"></span><br><span class="line">tempStr = @&quot;222&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 2 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 2 = 0x10b08b0d8</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameStrong = %@   nameStrong 2 = %p&quot;,self.nameStrong,self.nameStrong);</span><br><span class="line">// nameStrong = 111   nameStrong 2 = 0x10b08b078</span><br></pre></td></tr></table></figure>
+<p>如果传入的是可变对象tempMulStr，nameStrong会拷贝并一直持有tempMulStr的地址，在其他地方修改tempMulStr的值，nameStrong的值也一并会改变。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *tempMulStr = [NSMutableString stringWithFormat:@&quot;333&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 1 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 1 = 0x600000078900</span><br><span class="line"></span><br><span class="line">self.nameStrong = tempMulStr;</span><br><span class="line">NSLog(@&quot;nameStrong 1 = %p&quot;,self.nameStrong);</span><br><span class="line">//nameStrong 1 = 0x600000078900</span><br><span class="line">[tempMulStr appendString:@&quot;444&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 2 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 2 = 0x600000078900</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameStrong = %@   nameStrong 2 = %p&quot;,self.nameStrong,self.nameStrong);</span><br><span class="line">//nameStrong = 333444   nameStrong 2 = 0x600000078900</span><br></pre></td></tr></table></figure>
+<p>这与我们的初衷(不可变对象)不符！</p>
+<h3 id="可变对象"><a href="#可变对象" class="headerlink" title="可变对象"></a>可变对象</h3><h4 id="使用copy修饰可变对象nameMulCopy"><a href="#使用copy修饰可变对象nameMulCopy" class="headerlink" title="使用copy修饰可变对象nameMulCopy"></a>使用copy修饰可变对象nameMulCopy</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy) NSMutableString *nameMulCopy;</span><br></pre></td></tr></table></figure>
+<p>使用copy修饰后，nameMulCopy就变成了不可变对象，但是我们声明的是可变对象，而且在使用可变对象的一些方法时，程序会crash。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">NSString *tempStr = @&quot;111&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 1 = %p&quot;,tempStr);</span><br><span class="line">// tempStr 1 = 0x10ceae078</span><br><span class="line">//需要mutableCopy转化</span><br><span class="line">self.nameMulCopy = [tempStr mutableCopy];</span><br><span class="line">NSLog(@&quot;nameMulCopy 1 = %p  tempStr = %p&quot;,self.nameMulCopy,tempStr);</span><br><span class="line">//nameMulCopy 1 = 0xa000000003131313  tempStr = 0x10ceae078</span><br><span class="line"></span><br><span class="line">tempStr = @&quot;222&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 2 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 2 = 0x10ceae0d8</span><br><span class="line"></span><br><span class="line">//此行crash</span><br><span class="line">//[NSTaggedPointerString appendString:]: unrecognized selector sent to instance 0xa000000003131313   </span><br><span class="line">//未识别方法，因为copy后变成不可变对象了</span><br><span class="line">[self.nameMulCopy appendString:@&quot;333&quot;];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameMulCopy = %@   nameMulCopy 2 = %p&quot;,self.nameMulCopy,self.nameMulCopy);</span><br><span class="line">//nameMulCopy = 111   nameMulCopy 2 = 0xa000000003131313</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">NSMutableString *tempMulStr = [NSMutableString stringWithFormat:@&quot;333&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 1 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 1 = 0x600000076d80</span><br><span class="line"></span><br><span class="line">self.nameMulCopy = tempMulStr;</span><br><span class="line">NSLog(@&quot;nameMulCopy 1 = %p&quot;,self.nameMulCopy);</span><br><span class="line">//nameMulCopy 1 = 0xa000000003333333</span><br><span class="line"></span><br><span class="line">[tempMulStr appendString:@&quot;444&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 2 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 2 = 0x600000076d80</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameMulCopy = %@   nameMulCopy 2 = %p&quot;,self.nameMulCopy,self.nameMulCopy);</span><br><span class="line">//nameMulCopy = 333   nameMulCopy 2 = 0xa000000003333333</span><br></pre></td></tr></table></figure>
+<h4 id="使用strong修饰可变对象nameMulStrong"><a href="#使用strong修饰可变对象nameMulStrong" class="headerlink" title="使用strong修饰可变对象nameMulStrong"></a>使用strong修饰可变对象nameMulStrong</h4><p>如果传入的是不可变对象(需要mutableCopy转化)，nameMulStrong保存值到自己的地址，之后与tempStr在无关联。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSString *tempStr = @&quot;111&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 1 = %p&quot;,tempStr);</span><br><span class="line">//tempStr 1 = 0x10e89a078</span><br><span class="line"></span><br><span class="line">self.nameMulStrong = [tempStr mutableCopy];</span><br><span class="line">NSLog(@&quot;nameMulStrong 1 = %p  tempStr = %p&quot;,self.nameMulStrong,tempStr);</span><br><span class="line">//nameMulStrong 1 = 0x6000000723c0  tempStr = 0x10e89a078</span><br><span class="line"></span><br><span class="line">tempStr = @&quot;222&quot;;</span><br><span class="line">NSLog(@&quot;tempStr 2 = %p&quot;,tempStr);</span><br><span class="line">// tempStr 2 = 0x10e89a0d8</span><br><span class="line">    </span><br><span class="line">NSLog(@&quot;nameMulStrong = %@   nameMulStrong 2 = %p&quot;,self.nameMulStrong,self.nameMulStrong);</span><br><span class="line">//nameMulStrong = 111   nameMulStrong 2 = 0x6000000723c0</span><br></pre></td></tr></table></figure>
+<p>如果传入的是可变对象，nameMulStrong会拷贝并一直持有传入对象的地址空间，当传入的对象值发生变化时，nameMulStrong也会发生变化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *tempMulStr = [NSMutableString stringWithFormat:@&quot;333&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 1 = %p&quot;,tempMulStr);</span><br><span class="line">//tempMulStr 1 = 0x6080000730c0</span><br><span class="line"></span><br><span class="line">self.nameMulStrong = tempMulStr;</span><br><span class="line">NSLog(@&quot;nameMulStrong 1 = %p&quot;,self.nameMulStrong);</span><br><span class="line">// nameMulStrong 1 = 0x6080000730c0</span><br><span class="line"></span><br><span class="line">[tempMulStr appendString:@&quot;444&quot;];</span><br><span class="line">NSLog(@&quot;tempMulStr 2 = %p&quot;,tempMulStr);</span><br><span class="line">// tempMulStr 2 = 0x6080000730c0</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;nameMulStrong = %@   nameMulStrong 2 = %p&quot;,self.nameMulStrong,self.nameMulStrong);</span><br><span class="line">// nameMulStrong = 333444   nameMulStrong 2 = 0x6080000730c0</span><br></pre></td></tr></table></figure>
+<p>其他的可变与不可变对象与此同理。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论:"></a>结论:</h3><pre><code>不可变对象应当用copy修饰；
+可变对象应当用strong修饰。
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/23/利用Hexo-Github搭建个人博客/" rel="next" title="利用Hexo+Github搭建个人博客">
+                <i class="fa fa-chevron-left"></i> 利用Hexo+Github搭建个人博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/25/找出数组中只出现一次的数字/" rel="prev" title="找出数组中只出现一次的数字">
+                找出数组中只出现一次的数字 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangyun</p>
+              <p class="site-description motion-element" itemprop="description">No Pains, No Gains.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#不可变对象"><span class="nav-number">1.</span> <span class="nav-text">不可变对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用copy修饰不可变对象nameCopy，"><span class="nav-number">1.1.</span> <span class="nav-text">使用copy修饰不可变对象nameCopy，</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用strong修饰不可变对象"><span class="nav-number">1.2.</span> <span class="nav-text">使用strong修饰不可变对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变对象"><span class="nav-number">2.</span> <span class="nav-text">可变对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用copy修饰可变对象nameMulCopy"><span class="nav-number">2.1.</span> <span class="nav-text">使用copy修饰可变对象nameMulCopy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用strong修饰可变对象nameMulStrong"><span class="nav-number">2.2.</span> <span class="nav-text">使用strong修饰可变对象nameMulStrong</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">3.</span> <span class="nav-text">结论:</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangyun</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
